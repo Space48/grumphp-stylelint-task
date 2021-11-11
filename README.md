@@ -23,6 +23,8 @@ grumphp:
       triggered_by: ["css", "scss"]
       allowed_paths: 
         - /^resources\/css/
+      ignore_paths: 
+        - /^ignored-folder\/css/
       max_warnings: 3
   extensions:
     - Space48\GrumPHPStylelintTask\Extension

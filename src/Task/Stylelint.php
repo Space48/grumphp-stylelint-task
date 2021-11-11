@@ -22,7 +22,8 @@ class Stylelint extends AbstractExternalTask
             // Task config options
             'bin' => null,
             'triggered_by' => ['css', 'less', 'scss', 'sass', 'pcss'],
-            'allowed_paths' => null,
+            'allowed_paths' => [],
+            'ignore_paths' => [],
 
             // stylelint config options
             'config' => null,
@@ -35,6 +36,7 @@ class Stylelint extends AbstractExternalTask
         // Task config options
         $resolver->addAllowedTypes('bin', ['null', 'string', 'array']);
         $resolver->addAllowedTypes('allowed_paths', ['null', 'array']);
+        $resolver->addAllowedTypes('ignore_paths', ['null', 'array']);
         $resolver->addAllowedTypes('triggered_by', ['array']);
 
         // stylelint config options
@@ -58,8 +60,10 @@ class Stylelint extends AbstractExternalTask
 
         $files = $context
             ->getFiles()
-            ->paths($config['allowed_paths'] ?? [])
-            ->extensions($config['triggered_by']);
+            ->paths($config['allowed_paths'])
+            ->notPaths($config['ignore_paths'])
+            ->extensions($config['triggered_by'])
+        ;
 
         if (0 === \count($files)) {
             return TaskResult::createSkipped($this, $context);
